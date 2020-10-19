@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div id="payment-dropin"></div>
+
+<button id="bkmButton" onclick="openBexButton()" type="button">Payment with BKM</button>
+
+<div>
+    <script>
+
+        function openBexButton() {
+            $.ajax({
+                type: 'GET',
+                url: '/bkm/initticket',
+                timeout: 10000,
+                success: function (data) {
+                    var ticket = JSON.parse(data);
+                    initBex(ticket);
+                }
+            });
+        }
+
+        function initBex(ticket) {
+            console.log(ticket);
+            Bex.init(ticket, "modal", {
+                container: "payment-dropin",
+                buttonSize: [135, 70],
+                skipButton: true,
+                onCancel: function () {
+                    console.log("canseled");
+                    console.log(ticket);
+                },
+                onComplete: function (status) {
+                    console.log(ticket);
+                }
+            });
+        }
+
+    </script>
+</div>
